@@ -1,0 +1,8 @@
+# add latex extensions to ignore
+*.aux
+*.idx
+*.ilg
+*.ind
+*.log
+*.toc
+*~
