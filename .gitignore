@@ -1,5 +1,6 @@
 # add latex extensions to ignore
 *.aux
+*.backup
 *.idx
 *.ilg
 *.ind
