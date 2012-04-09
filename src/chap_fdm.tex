@@ -27,21 +27,85 @@ determined by a Taylor series expansion at $x_{i}$,
      \frac{f^{\left(n\right)}\left(x_{i}\right)}{2!}h^{n} + \cdot\cdot\cdot
   \label{eq:fdm_taylor}
 \end{equation}
-In Eq. 1, $f^{\left(3\right)}$ represents the $n$-th derivative of 
+In Eq. (\ref{eq:fdm_taylor}), $f^{\left(3\right)}$ represents the $n$-th derivative of 
 the function and $h$ is the spacing between points, $h = x_{i+1} - x_{i}$.
 \par
 The expansion shown above is exact if the number of terms in the Taylor series
 expansion is taken to infinity. Of course, this is not practical for computational
 methods and therefore we truncate the series at a finite number of terms. The error
 present caused by the truncation is known as truncation error.\index{truncation error}
+Instead of representing the full Taylor expansion of a function, we will truncate
+the expression after a few number of terms and repesent the truncation error with
+$\mathcal{O}\left(h^{n}\right)$. In this representation of the truncation error,
+$n$ represents the order of convergence.\index{order of convergence} Order of
+convergence means that as the grid is refined by a factor of two for example, the
+truncation error will reduce on the order of $2^{n}$. This does not imply that
+one method is better than the order, just merely a concept of convergence rate
+due to truncation effects. For example, if we expand a function to second order, we
+would rewrite Eq. (\ref{eq:fdm_taylor}) this as
+\begin{equation}
+     f\left(x_{i+1}\right) = f\left(x_{i}\right) + f^{\prime}\left(x_{i}\right)h + 
+     \frac{f^{\prime\prime}\left(x_{i}\right)}{2!}h^{2} + \mathcal{O}\left(h^{3}\right).
+\end{equation}
+As we approximate differentials, we can keep track of this truncation error to determine
+order of convergence of our methods. This is one way to ensure that our discretization
+method and implementation of solution algorithms are correct.
 
-
-\section{Approximation Differentials}
+\section{Approximation of Differentials}
 \label{sec:fdm_approx}
 
 % Reference Chapre and Canale
 % Forward, backward and central first order and second order differentials
 % Simple example of Taylor expansion approximating with these approxs
+
+There are many different approximations of differentials that can be constructed based
+on Taylor series.  We will first consider the approximation of first order derivatives.
+The first approximation is a \emph{first order forward difference} where we use information 
+about a point just to the right, $x_{i+1}$, to infer the derivative at $x_{i}$.  If we 
+perform a Taylor expansion about point $x_{i+1}$ to first order we get
+\begin{equation}
+     f\left(x_{i+1}\right) = f\left(x_{i}\right) + f^{\prime}\left(x_{i}\right)h + \mathcal{O}\left(h^{2}\right).
+\end{equation}
+This equation can be solved for the derivative of the function at $x_{i}$ 
+\begin{equation}
+     f^{\prime}_{for}\left(x_{i}\right) = \frac{f\left(x_{i+1}\right) - f\left(x_{i}\right)}{h} - \mathcal{O}\left(h\right),
+  \label{eq:first_forward}
+\end{equation}
+where $f^{\prime}_{for}\left(x_{i}\right)$ represents the first order forward difference approximation to the derivative at
+$x_{i}$.
+\par
+The opposite approximation is to consider a point to the left, $x_{i-1}$, to infer the
+derivative at $x_{i}$, \emph{known as the first order backward difference}. Here, we take a Taylor expansion to the left,
+\begin{equation}
+     f\left(x_{i-1}\right) = f\left(x_{i}\right) - f^{\prime}\left(x_{i}\right)h + \mathcal{O}\left(h^{2}\right).
+\end{equation}
+Solving for the derivative we can arrive at
+\begin{equation}
+     f^{\prime}_{bac}\left(x_{i}\right) = \frac{f\left(x_{i}\right) - f\left(x_{i-1}\right)}{h} + \mathcal{O}\left(h\right).
+  \label{eq:first_backward}
+\end{equation}
+Comparing Eqs. (\ref{eq:first_forward}) and (\ref{eq:first_backward}) we see that the formulation looks the same in that it
+is always the right point minus the left point in the numerator of the fraction. The only difference is the sign in the 
+truncation error is reversed. Therefore, we can expect that one of these approximations will under-predict the true answer
+and the other one will over-predict. Again both of these methods are first order methods.
+\par 
+The last simple approximation of a first derivative is a \emph{second-order central difference}. In this method we look 
+at both left and right points. We can Taylor expand each of these to second order to get
+\begin{eqnarray}
+    f\left(x_{i+1}\right) = f\left(x_{i}\right) + f^{\prime}\left(x_{i}\right)h + \frac{f^{\prime\prime}\left(x_{i}\right)}{2!}h^{2} + \mathcal{O}\left(h^{3}\right) \\
+    f\left(x_{i-1}\right) = f\left(x_{i}\right) - f^{\prime}\left(x_{i}\right)h + \frac{f^{\prime\prime}\left(x_{i}\right)}{2!}h^{2} - \mathcal{O}\left(h^{3}\right).
+\end{eqnarray}
+Subtracting the $x_{i-1}$ equation from the $x_{i+1}$, we are left with
+\begin{equation}
+    f\left(x_{i+1}\right) - f\left(x_{i-1}\right) = 2f^{\prime}\left(x_{i}\right)h  + \mathcal{O}\left(h^{3}\right).
+\end{equation}
+Solving for the derivative at $x_{i}$ we arrive at the second order central difference approximation
+\begin{equation}
+    f^{\prime}\left(x_{i}\right) = \frac{f\left(x_{i+1}\right) - f\left(x_{i-1}\right)}{h} - \mathcal{O}\left(h^{2}\right).
+\end{equation}
+From the resulting expression, this approximation method does not depend on the value of the function at $x_{i}$ and that
+the scheme is second order convergent.
+
 
 \subsection{Nonuniform Spacing}
 \label{subsec:fdm_nonuniform}
