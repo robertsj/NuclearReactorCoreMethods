@@ -1,3 +1,4 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Finite Difference Methods}
 \label{chap:fdm} % Always give a unique label
 % use \chaptermark{}
@@ -6,8 +7,49 @@
 \abstract*{Each chapter should be preceded by an abstract (10--15 lines long) that summarizes the content. The abstract will appear \textit{online} at \url{www.SpringerLink.com} and be available with unrestricted access. This allows unregistered users to read the abstract as a teaser for the complete chapter. As a general rule the abstracts will not appear in the printed version of your book unless it is the style of your particular book or that of the series to which your book belongs.
 Please use the 'starred' version of the new Springer \texttt{abstract} command for typesetting the text of the online abstracts (cf. source file of this chapter template \texttt{abstract}) and include them with the source files of your manuscript. Use the plain \texttt{abstract} command if the abstract is also to appear in the printed version of the book.}
 
-\abstract{Each chapter should be preceded by an abstract (10--15 lines long) that summarizes the content. The abstract will appear \textit{online} at \url{www.SpringerLink.com} and be available with unrestricted access. This allows unregistered users to read the abstract as a teaser for the complete chapter. As a general rule the abstracts will not appear in the printed version of your book unless it is the style of your particular book or that of the series to which your book belongs.\newline\indent
-Please use the 'starred' version of the new Springer \texttt{abstract} command for typesetting the text of the online abstracts (cf. source file of this chapter template \texttt{abstract}) and include them with the source files of your manuscript. Use the plain \texttt{abstract} command if the abstract is also to appear in the printed version of the book.}
 
-%\section{A section}
-%\label{sec:name}
+\section{Taylor Series}
+\label{sec:fdm_taylor}
+
+% Reference Chapre and Canale
+% Simple intro to Taylor Series
+% Talk about truncation error
+
+The finite difference method relies heavily on the mathematical concept of 
+Taylor Series.\index{Taylor Series}  If we take a function, $f(x)$, the 
+independent variable $x$ can be discretized into many points as shown in Figure \_.
+If the value of the function is known at $x_{i}$, the value at $x_{i+1}$ can be
+determined by a Taylor series expansion at $x_{i}$,
+\begin{equation}
+     f\left(x_{i+1}\right) = f\left(x_{i}\right) + f^{\prime}\left(x_{i}\right)h + 
+     \frac{f^{\prime\prime}\left(x_{i}\right)}{2!}h^{2} + 
+     \frac{f^{\left(3\right)}\left(x_{i}\right)}{3!}h^{3}+\cdot\cdot\cdot + 
+     \frac{f^{\left(n\right)}\left(x_{i}\right)}{2!}h^{n} + \cdot\cdot\cdot
+  \label{eq:fdm_taylor}
+\end{equation}
+In Eq. 1, $f^{\left(3\right)}$ represents the $n$-th derivative of 
+the function and $h$ is the spacing between points, $h = x_{i+1} - x_{i}$.
+\par
+The expansion shown above is exact if the number of terms in the Taylor series
+expansion is taken to infinity. Of course, this is not practical for computational
+methods and therefore we truncate the series at a finite number of terms. The error
+present caused by the truncation is known as truncation error.\index{truncation error}
+
+
+\section{Approximation Differentials}
+\label{sec:fdm_approx}
+
+% Reference Chapre and Canale
+% Forward, backward and central first order and second order differentials
+% Simple example of Taylor expansion approximating with these approxs
+
+\subsection{Nonuniform Spacing}
+\label{subsec:fdm_nonuniform}
+
+% Explanation of why important
+% redo some of the above approximations
+
+\section{Finite Difference Multigroup Diffusion Equation}
+
+% show derivation for an arbitrary group
+% derive for 2-D mesh with interior, reflective and non-reentrant BC
