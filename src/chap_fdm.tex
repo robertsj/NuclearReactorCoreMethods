@@ -41,7 +41,8 @@ $n$ represents the order of convergence.\index{order of convergence} Order of
 convergence means that as the grid is refined by a factor of two for example, the
 truncation error will reduce on the order of $2^{n}$. This does not imply that
 one method is better than the order, just merely a concept of convergence rate
-due to truncation effects. For example, if we expand a function to second order, we
+due to truncation effects. Linear convergence is when $n=1$, quadratic when $n=2$
+and cubic when $n=3$. For example, if we expand a function to second order, we
 would rewrite Eq. (\ref{eq:fdm_taylor}) this as
 \begin{equation}
      f\left(x_{i+1}\right) = f\left(x_{i}\right) + f^{\prime}\left(x_{i}\right)h + 
@@ -51,7 +52,7 @@ As we approximate differentials, we can keep track of this truncation error to d
 order of convergence of our methods. This is one way to ensure that our discretization
 method and implementation of solution algorithms are correct.
 
-\section{Approximation of Differentials}
+\section{Approximation of First Derivatives}
 \label{sec:fdm_approx}
 
 % Reference Chapre and Canale
@@ -101,13 +102,39 @@ Subtracting the $x_{i-1}$ equation from the $x_{i+1}$, we are left with
 \end{equation}
 Solving for the derivative at $x_{i}$ we arrive at the second order central difference approximation
 \begin{equation}
-    f^{\prime}\left(x_{i}\right) = \frac{f\left(x_{i+1}\right) - f\left(x_{i-1}\right)}{h} - \mathcal{O}\left(h^{2}\right).
+    f^{\prime}\left(x_{i}\right) = \frac{f\left(x_{i+1}\right) - f\left(x_{i-1}\right)}{2h} - \mathcal{O}\left(h^{2}\right).
 \end{equation}
 From the resulting expression, this approximation method does not depend on the value of the function at $x_{i}$ and that
 the scheme is second order convergent.
+\par
+\begin{figure}[t]
+\sidecaption[t]
+\scalebox{0.5}{\input{./figs/chap_fdm/convergence.tikz}}
+\caption{Convergence rate of forward, backward and central difference approximations. The slope of the error as a function of mesh spacing
+is an estimate of the order of convergence of an approximation scheme.}
+\label{fig:fdm_convergence}       % Give a unique label
+\end{figure}
+\paragraph{Example - Order of Convergence}
+As a simple example, we can approximate the derivative of the function, $f\left(x\right) = 4x^{3}$, at $x=100$ with
+each of the above approximations. We can choose an array of spacing values between $x_{i}$ and $x_{i+1}$ and $x_{i-1}$
+and $x_{i}$. For each spacing value we compute the estimate of the derivative using the three approximations above.
+To characterize the error of each we find the absolute difference between the approximation and the true value of the
+derivative at $x=100$. To infer the order of convergence, we can graph the errors as a function of spacing on a 
+log-log scale. These convergence plots are shown in Fig. \ref{fig:fdm_convergence}.
+\par 
+There are two distinct convergence trends present in Fig. \ref{fig:fdm_convergence}.  The curve with a slope of 1 on
+the log-log scale represents forward and backward finite difference approximations. This shows that these methods
+have linear convergence consistent with the truncation error. For the central difference approximation we predicted
+that it would have quadratic convergence. We can see from the plot that the magnitude of the slope is 2 on the log-log scale.
+MATLAB code to solve generate this plot is included below.
+\lstinputlisting{./code/chap_fdm/fdm_approx.m}
+% Discuss second order derivatives
 
+\section{Approximation of Second Derivatives}
 
-\subsection{Nonuniform Spacing}
+\section{Higher Order Finite Difference}
+
+\section{Nonuniform Spacing}
 \label{subsec:fdm_nonuniform}
 
 % Explanation of why important
