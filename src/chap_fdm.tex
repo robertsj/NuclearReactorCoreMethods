@@ -69,7 +69,7 @@ perform a Taylor expansion about point $x_{i+1}$ to first order we get
 \end{equation}
 This equation can be solved for the derivative of the function at $x_{i}$ 
 \begin{equation}
-     f^{\prime}_{for}\left(x_{i}\right) = \frac{f\left(x_{i+1}\right) - f\left(x_{i}\right)}{h} - \mathcal{O}\left(h\right),
+     \boxed{f^{\prime}_{for}\left(x_{i}\right) = \frac{f\left(x_{i+1}\right) - f\left(x_{i}\right)}{h} - \mathcal{O}\left(h\right)},
   \label{eq:first_forward}
 \end{equation}
 where $f^{\prime}_{for}\left(x_{i}\right)$ represents the first order forward difference approximation to the derivative at
@@ -82,7 +82,7 @@ derivative at $x_{i}$, \emph{known as the first order backward difference}. Here
 \end{equation}
 Solving for the derivative we can arrive at
 \begin{equation}
-     f^{\prime}_{bac}\left(x_{i}\right) = \frac{f\left(x_{i}\right) - f\left(x_{i-1}\right)}{h} + \mathcal{O}\left(h\right).
+     \boxed{f^{\prime}_{bac}\left(x_{i}\right) = \frac{f\left(x_{i}\right) - f\left(x_{i-1}\right)}{h} + \mathcal{O}\left(h\right)}.
   \label{eq:first_backward}
 \end{equation}
 Comparing Eqs. (\ref{eq:first_forward}) and (\ref{eq:first_backward}) we see that the formulation looks the same in that it
@@ -102,7 +102,7 @@ Subtracting the $x_{i-1}$ equation from the $x_{i+1}$, we are left with
 \end{equation}
 Solving for the derivative at $x_{i}$ we arrive at the second order central difference approximation
 \begin{equation}
-    f^{\prime}\left(x_{i}\right) = \frac{f\left(x_{i+1}\right) - f\left(x_{i-1}\right)}{2h} - \mathcal{O}\left(h^{2}\right).
+    \boxed{f^{\prime}_{cen}\left(x_{i}\right) = \frac{f\left(x_{i+1}\right) - f\left(x_{i-1}\right)}{2h} - \mathcal{O}\left(h^{2}\right)}.
 \end{equation}
 From the resulting expression, this approximation method does not depend on the value of the function at $x_{i}$ and that
 the scheme is second order convergent.
@@ -115,7 +115,7 @@ is an estimate of the order of convergence of an approximation scheme.}
 \label{fig:fdm_convergence}       % Give a unique label
 \end{figure}
 \paragraph{Example - Order of Convergence}
-As a simple example, we can approximate the derivative of the function, $f\left(x\right) = 4x^{3}$, at $x=100$ with
+As a simple example, we can approximate the derivative of the function, $f\left(x\right) = x^{4}$, at $x=100$ with
 each of the above approximations. We can choose an array of spacing values between $x_{i}$ and $x_{i+1}$ and $x_{i-1}$
 and $x_{i}$. For each spacing value we compute the estimate of the derivative using the three approximations above.
 To characterize the error of each we find the absolute difference between the approximation and the true value of the
@@ -131,6 +131,66 @@ MATLAB code to solve generate this plot is included below.
 % Discuss second order derivatives
 
 \section{Approximation of Second Derivatives}
+
+In nuclear reactor physics applications, we also need approximations for second derivatives.  The only difference in 
+these approximations is that more points to the left or right of $x_{i}$ need to be included. For the \emph{first order
+forward difference} approximation, we write two equations to second order. One equation representating a Taylor expansion
+to $x_{i+1}$ and the other to $x_{i+2}$,
+\begin{eqnarray}
+    f\left(x_{i+1}\right) = f\left(x_{i}\right) + f^{\prime}\left(x_{i}\right)h + \frac{f^{\prime\prime}\left(x_{i}\right)}{2!}h^{2} + \mathcal{O}\left(h^{3}\right) 
+  \label{eq:second_forward_1}
+\\
+    f\left(x_{i+2}\right) = f\left(x_{i}\right) + f^{\prime}\left(x_{i}\right)\left(2h\right) + \frac{f^{\prime\prime}\left(x_{i}\right)}{2!}\left(2h\right)^{2} + \mathcal{O}\left(h^{3}\right).
+  \label{eq:second_forward_2}
+\end{eqnarray}
+Since we are approximating the second derivative, the first derivative needs to be canceled out. To cancel this term out, 
+we multiply Eq. (\ref{eq:second_forward_1}) by a 2 and subtract it from Eq. (\ref{eq:second_forward_2}). The resulting 
+expression is
+\begin{equation}
+    f\left(x_{i+2}\right) - 2f\left(x_{i+1}\right) = -f\left(x_{i}\right) + f^{\prime\prime}\left(x_{i}\right)h^{2} + \mathcal{O}\left(h^{3}\right).
+\end{equation}
+The approximation of the second derivative for a first-order forward difference is therefore
+\begin{equation}
+    \boxed{f^{\prime\prime}_{for}\left(x_{i}\right) = \frac{f\left(x_{i+2}\right) - 2f\left(x_{i+1}\right) + f\left(x_{i}\right)}{h^{2}} - \mathcal{O}\left(h\right)}.
+\end{equation}
+\par 
+For the \emph{first-order backward finite difference} approximation of the second derivative we Taylor expand the function at
+$x_{i-1}$ and $x_{i-2}$ 
+\begin{eqnarray}
+    f\left(x_{i-1}\right) = f\left(x_{i}\right) - f^{\prime}\left(x_{i}\right)h + \frac{f^{\prime\prime}\left(x_{i}\right)}{2!}h^{2} - \mathcal{O}\left(h^{3}\right) 
+  \label{eq:second_backward_1}
+\\
+    f\left(x_{i-2}\right) = f\left(x_{i}\right) - f^{\prime}\left(x_{i}\right)\left(2h\right) + \frac{f^{\prime\prime}\left(x_{i}\right)}{2!}\left(2h\right)^{2} - \mathcal{O}\left(h^{3}\right).
+  \label{eq:second_backward_2}
+\end{eqnarray}
+Similar to the forward finite difference case, we must eliminate the first derivative term by multiplying 
+Eq. (\ref{eq:second_backward_1}) by 2 and subtract from Eq. (\ref{eq:second_backward_2}). This results in the following expression:
+\begin{equation}
+    f\left(x_{i-2}\right) - 2f\left(x_{i-1}\right) = -f\left(x_{i}\right) + f^{\prime\prime}\left(x_{i}\right)h^{2} - \mathcal{O}\left(h^{3}\right).
+\end{equation}
+The approximation of the second derivative for a first-order backward difference is therefore
+\begin{equation}
+    \boxed{f^{\prime\prime}_{bac}\left(x_{i}\right) = \frac{f\left(x_{i}\right) - 2f\left(x_{i-1}\right) + f\left(x_{i-2}\right)}{h^{2}} + \mathcal{O}\left(h\right)}.
+\end{equation}
+\par 
+Lastly, the \emph{second-order central difference} approximation to the second derivative can be derived by performing 
+a Taylor expansion at $x_{i-1}$ and $x_{i+1}$ to fourth-order,
+\begin{eqnarray}
+    f\left(x_{i+1}\right) = f\left(x_{i}\right) + f^{\prime}\left(x_{i}\right)h + \frac{f^{\prime\prime}\left(x_{i}\right)}{2!}h^{2} + \frac{f^{\prime\prime\prime}\left(x_{i}\right)}{3!}h^{3} + \mathcal{O}\left(h^{4}\right) \\
+    f\left(x_{i-1}\right) = f\left(x_{i}\right) - f^{\prime}\left(x_{i}\right)h + \frac{f^{\prime\prime}\left(x_{i}\right)}{2!}h^{2} - \frac{f^{\prime\prime\prime}\left(x_{i}\right)}{3!}h^{3} + \mathcal{O}\left(h^{4}\right).
+\end{eqnarray}
+To eliminate the first derivate term, these two equations can be directly added together resulting in
+\begin{equation}
+    f\left(x_{i+1}\right) + f\left(x_{i-1}\right) = 2f\left(x_{i}\right) + f^{\prime\prime}\left(x_{i}\right)h^{2} + \mathcal{O}\left(h^{4}\right).
+\end{equation}
+The approximation of the second derivative for a second-order central difference is
+\begin{equation}
+    \boxed{f^{\prime\prime}_{cen}\left(x_{i}\right) = \frac{f\left(x_{i+1}\right) -2f\left(x_{i}\right) + f\left(x_{i-1}\right)}{h^{2}} - \mathcal{O}\left(h^{2}\right)}.
+\end{equation}
+The second-order central difference will be the main approximation we use for second order derivatives. This is mainly due to the
+fact that has quadratic convergence. The other reason is that for a given computational node in a reactor, we think of leakage
+occuring to the left and to the right. This leakage term in represented with mathematically by a second derivative and by using
+the central difference approximation, we can couple to both the right and left nodes.
 
 \section{Higher Order Finite Difference}
 
