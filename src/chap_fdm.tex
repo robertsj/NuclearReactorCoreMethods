@@ -127,7 +127,7 @@ the log-log scale represents forward and backward finite difference approximatio
 have linear convergence consistent with the truncation error. For the central difference approximation we predicted
 that it would have quadratic convergence. We can see from the plot that the magnitude of the slope is 2 on the log-log scale.
 MATLAB code to solve generate this plot is included below.
-\lstinputlisting{./code/chap_fdm/fdm_approx.m}
+\lstinputlisting{./code/chap_fdm/fdm_approx_1.m}
 % Discuss second order derivatives
 
 \section{Approximation of Second Derivatives}
@@ -193,6 +193,9 @@ occuring to the left and to the right. This leakage term in represented with mat
 the central difference approximation, we can couple to both the right and left nodes.
 
 \paragraph{Example - Order of Convergence Second Derivative}
+
+Similar to the previous example, we can approximate the second derivative of the function, $f\left(x\right) = 6x^{6} + 
+4x^{3} + 8x + 2$
 
 In this example, we will verify the order of convergence for second derivatives with each of the approximations above.
 \section{Higher Order Finite Difference}
