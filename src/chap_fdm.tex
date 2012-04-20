@@ -82,7 +82,8 @@ derivative at $x_{i}$, \emph{known as the first order backward difference}. Here
 \end{equation}
 Solving for the derivative we can arrive at
 \begin{equation}
-     \boxed{f^{\prime}_{bac}\left(x_{i}\right) = \frac{f\left(x_{i}\right) - f\left(x_{i-1}\right)}{h} + \mathcal{O}\left(h\right)}.
+     \boxed{f^{\prime}_{bac}\left(x_{i}\right) = \frac{f\left(x_{i}\right) - f\left(x_{i-1}\right)}{h} + 
+     \mathcal{O}\left(h\right).}
   \label{eq:first_backward}
 \end{equation}
 Comparing Eqs. (\ref{eq:first_forward}) and (\ref{eq:first_backward}) we see that the formulation looks the same in that it
@@ -102,17 +103,17 @@ Subtracting the $x_{i-1}$ equation from the $x_{i+1}$, we are left with
 \end{equation}
 Solving for the derivative at $x_{i}$ we arrive at the second order central difference approximation
 \begin{equation}
-    \boxed{f^{\prime}_{cen}\left(x_{i}\right) = \frac{f\left(x_{i+1}\right) - f\left(x_{i-1}\right)}{2h} - \mathcal{O}\left(h^{2}\right)}.
+    \boxed{f^{\prime}_{cen}\left(x_{i}\right) = \frac{f\left(x_{i+1}\right) - f\left(x_{i-1}\right)}{2h} - \mathcal{O}\left(h^{2}\right).}
 \end{equation}
 From the resulting expression, this approximation method does not depend on the value of the function at $x_{i}$ and that
 the scheme is second order convergent.
 \par
 \begin{figure}[t]
 \sidecaption[t]
-\scalebox{0.5}{\input{./figs/chap_fdm/convergence.tikz}}
+\scalebox{0.5}{\input{./figs/chap_fdm/fdm_approx_1.tikz}}
 \caption{Convergence rate of forward, backward and central difference approximations. The slope of the error as a function of mesh spacing
 is an estimate of the order of convergence of an approximation scheme.}
-\label{fig:fdm_convergence}       % Give a unique label
+\label{fig:fdm_approx_1}
 \end{figure}
 \paragraph{Example - Order of Convergence First Derivative}
 As a simple example, we can approximate the derivative of the function, $f\left(x\right) = x^{4}$, at $x=100$ with
@@ -120,9 +121,9 @@ each of the above approximations. We can choose an array of spacing values betwe
 and $x_{i}$. For each spacing value we compute the estimate of the derivative using the three approximations above.
 To characterize the error of each we find the absolute difference between the approximation and the true value of the
 derivative at $x=100$. To infer the order of convergence, we can graph the errors as a function of spacing on a 
-log-log scale. These convergence plots are shown in Fig. \ref{fig:fdm_convergence}.
+log-log scale. These convergence plots are shown in Fig. \ref{fig:fdm_approx_1}.
 \par 
-There are two distinct convergence trends present in Fig. \ref{fig:fdm_convergence}.  The curve with a slope of 1 on
+There are two distinct convergence trends present in Fig. \ref{fig:fdm_approx_1}.  The curve with a slope of 1 on
 the log-log scale represents forward and backward finite difference approximations. This shows that these methods
 have linear convergence consistent with the truncation error. For the central difference approximation we predicted
 that it would have quadratic convergence. We can see from the plot that the magnitude of the slope is 2 on the log-log scale.
@@ -151,7 +152,8 @@ expression is
 \end{equation}
 The approximation of the second derivative for a first-order forward difference is therefore
 \begin{equation}
-    \boxed{f^{\prime\prime}_{for}\left(x_{i}\right) = \frac{f\left(x_{i+2}\right) - 2f\left(x_{i+1}\right) + f\left(x_{i}\right)}{h^{2}} - \mathcal{O}\left(h\right)}.
+    \boxed{f^{\prime\prime}_{for}\left(x_{i}\right) = \frac{f\left(x_{i+2}\right) - 2f\left(x_{i+1}\right) + f\left(x_{i}\right)}{h^{2}} - \mathcal{O}\left(h\right).}
+    \label{eq:second_forward}
 \end{equation}
 \par 
 For the \emph{first-order backward finite difference} approximation of the second derivative we Taylor expand the function at
@@ -170,7 +172,8 @@ Eq. (\ref{eq:second_backward_1}) by 2 and subtract from Eq. (\ref{eq:second_back
 \end{equation}
 The approximation of the second derivative for a first-order backward difference is therefore
 \begin{equation}
-    \boxed{f^{\prime\prime}_{bac}\left(x_{i}\right) = \frac{f\left(x_{i}\right) - 2f\left(x_{i-1}\right) + f\left(x_{i-2}\right)}{h^{2}} + \mathcal{O}\left(h\right)}.
+    \boxed{f^{\prime\prime}_{bac}\left(x_{i}\right) = \frac{f\left(x_{i}\right) - 2f\left(x_{i-1}\right) + f\left(x_{i-2}\right)}{h^{2}} + \mathcal{O}\left(h\right).}
+    \label{eq:second_backward}
 \end{equation}
 \par 
 Lastly, the \emph{second-order central difference} approximation to the second derivative can be derived by performing 
@@ -185,26 +188,213 @@ To eliminate the first derivate term, these two equations can be directly added 
 \end{equation}
 The approximation of the second derivative for a second-order central difference is
 \begin{equation}
-    \boxed{f^{\prime\prime}_{cen}\left(x_{i}\right) = \frac{f\left(x_{i+1}\right) -2f\left(x_{i}\right) + f\left(x_{i-1}\right)}{h^{2}} - \mathcal{O}\left(h^{2}\right)}.
+    \boxed{f^{\prime\prime}_{cen}\left(x_{i}\right) = \frac{f\left(x_{i+1}\right) -2f\left(x_{i}\right) + f\left(x_{i-1}\right)}{h^{2}} - \mathcal{O}\left(h^{2}\right).}
+     \label{eq:second_central}
 \end{equation}
 The second-order central difference will be the main approximation we use for second order derivatives. This is mainly due to the
 fact that has quadratic convergence. The other reason is that for a given computational node in a reactor, we think of leakage
 occuring to the left and to the right. This leakage term in represented with mathematically by a second derivative and by using
 the central difference approximation, we can couple to both the right and left nodes.
 
+\begin{figure}[t]
+\sidecaption[t]
+\scalebox{0.5}{\input{./figs/chap_fdm/fdm_approx_2.tikz}}
+\caption{Convergence rate of forward, backward and central difference approximations of  a second derivative. The slope of the error as a function of mesh spacing is an estimate of the order of convergence of an approximation scheme.}
+\label{fig:fdm_approx_2}
+\end{figure}
+
 \paragraph{Example - Order of Convergence Second Derivative}
 
+In this example, we will verify the order of convergence for second derivatives with each of the approximations above. 
 Similar to the previous example, we can approximate the second derivative of the function, $f\left(x\right) = 6x^{6} + 
-4x^{3} + 8x + 2$
+4x^{3} + 8x + 2$  at $x=20$.  We again, generate a vector of spacings to approximate the second derivative using Eqs.
+(\ref{eq:second_forward}), (\ref{eq:second_backward}) and (\ref{eq:second_central}).
+\par
+A plot of the convergence rates of each of the second derivative approximations is shown in Fig. \ref{fig:fdm_approx_2}.
+From the figure we can see that the forward and backward approximations converge linearly while the central difference
+approximation converges quadratically.  The is exactly the order of convergence values that were theoretically derived
+above.  MATLAB code to generate Fig. \ref{fig:fdm_approx_2} is included below.
+\lstinputlisting{./code/chap_fdm/fdm_approx_2.m}
 
-In this example, we will verify the order of convergence for second derivatives with each of the approximations above.
 \section{Higher Order Finite Difference}
 
 \section{Nonuniform Spacing}
 \label{subsec:fdm_nonuniform}
 
-% Explanation of why important
-% redo some of the above approximations
+When we derive the finite difference multigroup diffusion equation, we will include the option of having a nonuniform
+mesh spacing.  This is straightforward, but affects the order of convergence of the approximations derived above.  Here,
+we will re-derive the central finite difference approximations of the first and second derivatives.  We can then study how
+the order of convergence is affected.
+\par
+Beginning with the central difference approximation of the first derivative, we can write the Taylor expansion to the left and
+right of $x_i$,
+\begin{eqnarray}
+    f\left(x_{i+1}\right) = f\left(x_{i}\right) + f^{\prime}\left(x_{i}\right)h_{i} + \frac{f^{\prime\prime}\left(x_{i}\right)}{2!}h^{2}_{i} + \mathcal{O}\left(h^{3}_{i}\right) \\
+  \label{eq:fdm_non_central1_1}
+    f\left(x_{i-1}\right) = f\left(x_{i}\right) - f^{\prime}\left(x_{i}\right)h_{i-1} + \frac{f^{\prime\prime}\left(x_{i}\right)}     {2!}h^{2}_{i-1} - \mathcal{O}\left(h^{3}_{i-1}\right).
+  \label{eq:fdm_non_central1_2}
+\end{eqnarray}
+In the above equations we define $h_{i} = x_{i+1} - x_{i}$ and $h_{i-1} = x_{i} - x_{i-1}$.  We can subtract Eq. 
+(\ref{eq:fdm_non_central1_2}) from (\ref{eq:fdm_non_central1_1}) to yield,
+\begin{eqnarray}
+     f\left(x_{i+1}\right) -  f\left(x_{i-1}\right) = \left(h_{i} - h_{i-1}\right) f^{\prime}\left(x_{i}\right) + 
+     \left(h^{2}_{i} - h^{2}_{i-1}\right)\frac{f^{\prime\prime}\left(x_{i}\right)}{2} \\ + \mathcal{O}\left(h^{3}_{i} +
+      h^{3}_{i-1}\right). \nonumber
+\end{eqnarray}
+Unlike in the uniform spacing case, the second derivative cannot be cancelled out when we consider nonuniform spacing.
+Therefore, the leading term for the truncation error is the second order term. We can rewrite the above equation so 
+that
+\begin{equation}
+     f\left(x_{i+1}\right) -  f\left(x_{i-1}\right) = \left(h_{i} + h_{i-1}\right) f^{\prime}\left(x_{i}\right) + 
+      \mathcal{O}\left(h^{2}_{i} - h^{2}_{i-1}\right).
+\end{equation}
+Solving for the first order derivative and dividing by the difference in mesh spacing, we are left with
+\begin{equation}
+     f^{\prime}\left(x_{i}\right) = \frac{f\left(x_{i+1}\right) -  f\left(x_{i-1}\right)}{h_{i} + h_{i-1}} +  
+     \mathcal{O}\left(\frac{h^{2}_{i} - h^{2}_{i-1}}{h_{i} + h_{i-1}}\right).
+\end{equation}
+We can simply the polynomial in the leading truncation error by factorizing the numerator,
+\begin{equation}
+     \boxed{f^{\prime}\left(x_{i}\right) = \frac{f\left(x_{i+1}\right) -  f\left(x_{i-1}\right)}{h_{i} + h_{i-1}} +  
+     \mathcal{O}\left(h_{i} - h_{i-1}\right).}
+  \label{eq:fdm_non_central1}
+\end{equation}
+From the result, we observe that the approximation has a linear convergence when the spacing is nonuniform.  When
+the spacing is uniform we can readily see that the leading term in the error will disappear and we will be left with a
+second order approximation.
+
+\begin{figure}[t]
+\sidecaption[t]
+\scalebox{0.5}{\input{./figs/chap_fdm/fdm_nonuni_1.tikz}}
+\caption{Convergence central finite difference approximation of  a first derivative for nonuniform spacing. The plot is shown for various values of a grid multiplier $r$. The slope of the error as a function of mesh spacing is an estimate of the order of convergence of an approximation scheme.}
+\label{fig:fdm_nonuni_1}
+\end{figure}
+
+\paragraph{Example - Central Difference Approximation of First Derivative with Nonuniform Spacing}
+In this example, we extend the previous example of first derivative approximations to nonuniform spacing. Here, we
+only show the result for the central difference approximation.  We again approximate the value of the first derivative of
+the function  $f\left(x\right) = x^{4}$ at $x=100$ .  We define another variable, $r$ which is the ratio of the spacing on
+the right side of $x=100$ to the left side of $x=100$.  We generate two vectors of spacing values, one for the left and one
+for the right side of $x=100$ while keeping the ratio $r$ the same at any given element of these two vectors.
+\par
+Figure \ref{fig:fdm_nonuni_1} shows the convergence rate of the central difference approximation of the first derivative. A range of grid multipliers, $r$, are shown.  We can observe that depending on the value of $r$, the order of convergence 
+ranges from linear to qudratic.  The convergence is of course purely quadratic when the grid multiplier is unity which is for a
+uniform grid. We can also observe that as the grid multiplier increases the starting error is much larger and shows less and 
+less quadratic convergence.  On the other hand, as $r$ approaches unity, more of the range is governed by quadratic
+convergence, but does eventually turn into linear. MATLAB code to generate Fig. \ref{fig:fdm_nonuni_1} is included below.
+\lstinputlisting{./code/chap_fdm/fdm_nonuni_1.m}
+
+\par
+Similarly, we can derive the nonuniform spacing version of the central difference approximation of the second derivative.
+This approximation is the most common in finite difference approximaitons of the diffusion equation.  To start the 
+derivation we Taylor expand to the left and right of $x_{i}$ to fourth order as before,
+\begin{eqnarray}
+    f\left(x_{i+1}\right) = f\left(x_{i}\right) + f^{\prime}\left(x_{i}\right)h_{i} + \frac{f^{\prime\prime}\left(x_{i}\right)}  
+   {2!}h^{2} _{i}+ \frac{f^{\prime\prime\prime}\left(x_{i}\right)}{3!}h^{3}_{i} + \mathcal{O}\left(h^{4}_{i}\right) \\
+  \label{eq:fdm_non_central2_1}
+    f\left(x_{i-1}\right) = f\left(x_{i}\right) - f^{\prime}\left(x_{i}\right)h_{i-1} + \frac{f^{\prime\prime}\left(x_{i}\right)}
+   {2!}h^{2}_{i-1} - \frac{f^{\prime\prime\prime}\left(x_{i}\right)}{3!}h^{3}_{i-1} + \mathcal{O}\left(h^{4}_{i-1}\right).
+  \label{eq:fdm_non_central2_2}
+\end{eqnarray}
+As with the uniform spacing example, we would like to cancel out the first derivative term and then solve for the second
+derivative. To do this we must divide Eq. (\ref{eq:fdm_non_central2_1}) by $h_{i}$ and Eq. (\ref{eq:fdm_non_central1_2})
+by $h_{i-1}$. This results in
+\begin{eqnarray}
+    \frac{f\left(x_{i+1}\right)}{h_{i}} = \frac{f\left(x_{i}\right)}{h_{i}} + f^{\prime}\left(x_{i}\right) + 
+    \frac{f^{\prime\prime}\left(x_{i}\right)}{2}h _{i}+ \frac{f^{\prime\prime\prime}\left(x_{i}\right)}{6}h^{2}_{i} +   
+    \mathcal{O}\left(h^{3}_{i}\right) \\
+  \label{eq:fdm_non_central2_3}
+    \frac{f\left(x_{i-1}\right)}{h_{i-1}} = \frac{f\left(x_{i}\right)}{h_{i-1}} - f^{\prime}\left(x_{i}\right) + 
+    \frac{f^{\prime\prime}\left(x_{i}\right)}{2}h_{i-1} - \frac{f^{\prime\prime\prime}\left(x_{i}\right)}{6}h^{2}_{i-1} + 
+    \mathcal{O}\left(h^{3}_{i-1}\right).
+  \label{eq:fdm_non_central2_4}
+\end{eqnarray}
+Now we can see that if we add Eq. (\ref{eq:fdm_non_central2_3}) and (\ref{eq:fdm_non_central2_4}) the first derivative
+will cancel out.  We can also see that after the addition, the third derivative term will remain, thus making it the leading term
+in the truncation error. These operations are reflected in the following equation:
+\begin{eqnarray}
+     \frac{f\left(x_{i+1}\right)}{h_{i}} + \frac{f\left(x_{i-1}\right)}{h_{i-1}} = \left(\frac{1}{h_{i}} + \frac{1}{h_{i-1}}\right)
+     f\left(x_{i}\right) + \left(h_{i} + h_{i-1}\right)\frac{f^{\prime\prime}\left(x_{i}\right)}{2}  \\
+     + \mathcal{O}\left(h^{2}_{i} - h^{2}_{i-1}\right). \nonumber
+\end{eqnarray}
+Finally, we can solve for the second derivative and reduce the polynomial in the leading term of the truncation error,
+\begin{equation}
+     \boxed{f^{\prime\prime}\left(x_{i}\right) = \frac{\frac{f\left(x_{i+1}\right)}{h_{i}} - 
+     \left(\frac{1}{h_{i}} + \frac{1}{h_{i-1}}\right)f\left(x_{i}\right) + \frac{f\left(x_{i-1}\right)}{h_{i-1}}}
+     {\frac{h_{i} + h_{i-1}}{2}} - \mathcal{O}\left(h_{i} - h_{i-1}\right).}
+  \label{eq:fdm_non_central2}
+\end{equation}
+We observe that the order of convergence is now linear for nonuniform spacing with the central difference approximation.
+Also, if the spacings are equivalent, we can readily see that Eq. (\ref{eq:fdm_non_central2}) reduces to 
+Eq. (\ref{eq:second_central}).
+
+\begin{figure}[t]
+\sidecaption[t]
+\scalebox{0.5}{\input{./figs/chap_fdm/fdm_nonuni_2.tikz}}
+\caption{Convergence central finite difference approximation of  a second derivative for nonuniform spacing. The plot is shown for various values of a grid multiplier $r$. The slope of the error as a function of mesh spacing is an estimate of the order of convergence of an approximation scheme.}
+\label{fig:fdm_nonuni_2}
+\end{figure}
+
+\paragraph{Example - Central Difference Approximation of Second Derivative with Nonuniform Spacing}
+We now show an example of approximating the second derivative of the function $f\left(x\right) = 6x^{6} + 
+4x^{3} + 8x + 2$  at $x=20$ using the central difference approximation.  We again generate curves for a fixed
+ratio between the grid size to the right and left of $x=20$.  The results are shown in Fig. \ref{fig:fdm_nonuni_2}.
+Similar to the nonuniform example of the first derivative, we see a range of convergence rates from linear to quadratic.
+MATLAB code to generate Fig. \ref{fig:fdm_nonuni_2}.
+\lstinputlisting{./code/chap_fdm/fdm_nonuni_2.m}
+
+\section{Estimation of Order of Convergence}
+
+From all of the examples shown in this chapter, we can see the expected convergence rates for each type of approximations.  To verify that codes are consistent with discretization methods, we should use a uniform mesh and determine the order of convergence.  In all of the MATLAB examples, in order to determine the error and be able to plot
+the convergence rates, we needed to evaluate the \emph{exact} derivative at the point of interest.  In real applications
+this derivative will be unknown and so we need a different method in estimating the order of convergence, denoted as
+$p$.
+
+In all of the boxed approximations above we always represent the derivative with an equals ($=$) sign. This is because we include the truncation error at the end of the expression. When we program these approximations into a code, we will not include
+this truncation error term.  If we define $u\equiv f^{\prime}\left(x\right)$ or $u \equiv f^{\prime\prime}\left(x\right)$ we can 
+write any of the apprximations above as
+\begin{equation}
+     u = u_{h}+ \mathcal{O}\left(h^{p}\right).
+\end{equation}
+Therefore, if $u$ is the true answer that we are looking for, our code will give us the answer $u_{h}$.  In order to determine
+the order of convergence, we need to write out the leading term in the truncation error. We know from the taylor series 
+expansion it will have the form
+\begin{equation}
+     \mathcal{O}\left(h^{p}\right) = \beta h^{p} + R,
+\end{equation}
+where $\beta$ is some constant multiplying the leading truncation term and $R$ represents the rest of the truncation error.
+We now write the true answer $u$ in terms of 3 uniform discretization grids with spacings of $h$, $2h$ and $4h$,
+\begin{eqnarray}
+     u = u_{h} + \beta h^{p} + R 
+   \label{eq:fdm_p_u} \\ 
+     u = u_{2h} + \beta^{\prime}\left(2h\right)^{p} + R^{\prime}
+  \label{eq:fdm_p_u2} \\
+     u = u_{4h} + \beta^{\prime\prime}\left(4h\right)^{p} + R^{\prime\prime}.
+  \label{eq:fdm_p_u4}
+\end{eqnarray}
+The terms $u_{h}$, $u_{2h}$ and $u_{4h}$ are the results that we would get from output of a code.  We see that we
+have 8 unknowns but only 3 equations.  The first approximation that we can make is that the leading term in the truncation
+error dominates such that $R=R^{\prime}=R^{\prime\prime}=0$. Next, we can assume that the multipliers, $\beta$ are 
+all equivalent, $\beta=\beta^{\prime}=\beta^{\prime\prime}$.  Now, we have reduce the number of unknowns to 3: 
+$u$, $\beta$ and $p$ such that the system is closed.
+
+To solve this system of equations for $p$ we first eliminate $u$ in Eqs. (\ref{eq:fdm_p_u}) and (\ref{eq:fdm_p_u2}) by
+equating them,
+\begin{equation}
+     u_{h} + \beta h^{p} =  u_{2h} + 2^{p}\beta h^{p}.
+  \label{eq:fdm_p_u12}
+\end{equation}
+In Eq. (\ref{eq:fdm_p_u12}) we have already factored out the $2^{p}$.  Solving for $\beta h^{p}$ we get,
+\begin{equation}
+     \beta h^{p} = \frac{u_{h} - u_{2h}}{2^{p} + 1}.
+     \label{eq:fdm_p_beta}
+\end{equation}
+Equation (\ref{eq:fdm_p_beta}) can be substituted into Eqs. (\ref{eq:fdm_p_u2}) and (\ref{eq:fdm_p_u4}) yielding
+respectively,
+\begin{eqnarray}
+     u = u_{2h} + 2^{p}\left( \frac{u_{h} - u_{2h}}{2^{p} + 1}\right) \\
+    u = u_{4h} + 4^{p}\left( \frac{u_{h} - u_{2h}}{2^{p} + 1}\right)
+\end{eqnarray}
 
 \section{Finite Difference Multigroup Diffusion Equation}
 

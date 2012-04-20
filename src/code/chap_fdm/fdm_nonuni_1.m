@@ -1,4 +1,4 @@
-% Simple Approximation of First Order Derivative
+% Simple Approximation of First Order Derivative - Nonuniform Spacing
 
 % Function
 f = @(x) x.^4;
@@ -6,8 +6,8 @@ f = @(x) x.^4;
 % Analytical Derivative of Function
 df_exact = @(x) 4*x.^3;
 
-% vector non-uniform grid multiplier from 1 - 2 in logspace
-r = logspace(0,log10(2),10);
+% vector non-uniform grid multiplier
+r = [1,1.001,1.01,1.05,1.1];
 
 % preallocate error vector
 err_cen = zeros(1000,length(r));
@@ -28,8 +28,21 @@ for i = 1:length(r)
 end
 
 % Plot Results
-loglog(hr,err_cen,'k-','LineWidth',2);
-grid
+figure1 = figure;
+axes1 = axes('Parent',figure1,'ZMinorGrid','on','YScale','log',...
+    'YMinorTick','on','XScale','log','XMinorTick','on');
+box(axes1,'on');
+grid(axes1,'on');
 grid minor
+hold(axes1,'all');
+loglog1 = loglog(hl,err_cen,'Parent',axes1,'LineWidth',2,'Color',[0 0 0]);
+set(loglog1(1),'DisplayName','r = 1');
+set(loglog1(2),'MarkerSize',2,'Marker','.','LineStyle','none',...
+    'DisplayName','r = 1.001');
+set(loglog1(3),'LineStyle','-.','DisplayName','r = 1.01');
+set(loglog1(4),'LineStyle',':','DisplayName','r = 1.05');
+set(loglog1(5),'LineStyle','--','DisplayName','r = 1.1');
 xlabel('x spacing [-]','LineWidth',2);
 ylabel('Error from true derivative [-]');
+legend1 = legend(axes1,'show');
+set(legend1,'Location','NorthWest');

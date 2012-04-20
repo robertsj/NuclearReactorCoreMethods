@@ -1,4 +1,4 @@
-% Simple Approximation of First Order Derivative
+% Simple Approximation of Second Order Derivative
 
 % Function
 f = @(x) 6*x.^6 + 4*x.^3 + 8*x + 2;
