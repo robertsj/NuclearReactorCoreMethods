@@ -114,7 +114,7 @@ the scheme is second order convergent.
 is an estimate of the order of convergence of an approximation scheme.}
 \label{fig:fdm_convergence}       % Give a unique label
 \end{figure}
-\paragraph{Example - Order of Convergence}
+\paragraph{Example - Order of Convergence First Derivative}
 As a simple example, we can approximate the derivative of the function, $f\left(x\right) = x^{4}$, at $x=100$ with
 each of the above approximations. We can choose an array of spacing values between $x_{i}$ and $x_{i+1}$ and $x_{i-1}$
 and $x_{i}$. For each spacing value we compute the estimate of the derivative using the three approximations above.
@@ -192,6 +192,9 @@ fact that has quadratic convergence. The other reason is that for a given comput
 occuring to the left and to the right. This leakage term in represented with mathematically by a second derivative and by using
 the central difference approximation, we can couple to both the right and left nodes.
 
+\paragraph{Example - Order of Convergence Second Derivative}
+
+In this example, we will verify the order of convergence for second derivatives with each of the approximations above.
 \section{Higher Order Finite Difference}
 
 \section{Nonuniform Spacing}
