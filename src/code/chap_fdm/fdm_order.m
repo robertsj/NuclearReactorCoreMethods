@@ -1,4 +1,5 @@
 % Simple Approximation of First Order Derivative
+% Estimation of Convergence Order using 3 grid sizes
 
 % Function
 f = @(x) x.^4;

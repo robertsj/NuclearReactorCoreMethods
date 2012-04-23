@@ -217,6 +217,47 @@ above.  MATLAB code to generate Fig. \ref{fig:fdm_approx_2} is included below.
 \lstinputlisting{./code/chap_fdm/fdm_approx_2.m}
 
 \section{Higher Order Finite Difference}
+     In certain situations it may be advantageous to use a higher order finite difference method.  In this section we will not
+derive any of these expressions, but just include them for completeness.  In order to derive these expressions just Taylor
+expand the function to higher order and include more neighboring points.
+
+\paragraph{Approximation of First Derivatives}
+\begin{itemize}
+     \item Second Order Forward Difference
+	\begin{equation}
+	     f^{\prime}\left(x_{i}\right) = \frac{-f\left(x_{i+2}\right) + 4f\left(x_{i+1}\right) - 3f\left(x_{i}\right)}{2h} 
+               + \mathcal{O}\left(h^{2}\right)
+	\end{equation}
+     \item Second Order Backward Difference
+	\begin{equation}
+	     f^{\prime}\left(x_{i}\right) = \frac{3f\left(x_{i}\right) - 4f\left(x_{i-1}\right) + f\left(x_{i-2}\right)}{2h} 
+               + \mathcal{O}\left(h^{2}\right)
+	\end{equation}
+     \item Fourth Order Central Difference
+	\begin{equation}
+	     f^{\prime}\left(x_{i}\right) = \frac{-f\left(x_{i+2}\right) + 8f\left(x_{i+1}\right) - 8f\left(x_{i-1}\right)+
+               f\left(x_{i-2}\right)}{12h} + \mathcal{O}\left(h^{4}\right)
+	\end{equation}
+\end{itemize}
+
+\paragraph{Approximation of Second Derivatives}
+\begin{itemize}
+     \item Second Order Forward Difference
+	\begin{equation}
+	     f^{\prime\prime}\left(x_{i}\right) = \frac{-f\left(x_{i+3}\right) + 4f\left(x_{i+2}\right) - 5f\left(x_{i+1}\right) +  
+               2f\left(x_{i}\right)}{h^{2}} + \mathcal{O}\left(h^{2}\right)
+	\end{equation}
+     \item Second Order Backward Difference
+	\begin{equation}
+	     f^{\prime\prime}\left(x_{i}\right) = \frac{2f\left(x_{i}\right) - 5f\left(x_{i-1}\right) + 4f\left(x_{i-2}\right) - 
+               f\left(x_{i-3}\right)}{h^{2}} + \mathcal{O}\left(h^{2}\right)
+	\end{equation}
+     \item Fourth Order Central Difference
+	\begin{equation}
+	     f^{\prime\prime}\left(x_{i}\right) = \frac{-f\left(x_{i+3}\right) + 8f\left(x_{i+2}\right) -13f\left(x_{i+1}\right) + 
+               13f\left(x_{i-1}\right) - 8f\left(x_{i-2}\right) +  f\left(x_{i-3}\right)}{12h^{2}} + \mathcal{O}\left(h^{4}\right)
+	\end{equation}
+\end{itemize}
 
 \section{Nonuniform Spacing}
 \label{subsec:fdm_nonuniform}
@@ -395,6 +436,41 @@ respectively,
      u = u_{2h} + 2^{p}\left( \frac{u_{h} - u_{2h}}{2^{p} + 1}\right) \\
     u = u_{4h} + 4^{p}\left( \frac{u_{h} - u_{2h}}{2^{p} + 1}\right)
 \end{eqnarray}
+To eliminate $u$ such that $p$ is the only unknown, we can equate the above expressions. We also split the $4^{p}$ into 
+$2\cdot2^{p}$ so that
+\begin{equation}
+     u_{2h} + 2^{p}\left( \frac{u_{h} - u_{2h}}{2^{p} + 1}\right) = u_{4h} + 
+     2\cdot2^{p}\left( \frac{u_{h} - u_{2h}}{2^{p} + 1}\right).
+\end{equation} 
+We can rearrange the equation and factor out some common terms conveniently leaving,
+\begin{equation}
+     u_{2h} - u_{4h} = 2^{p}\left( \frac{u_{h} - u_{2h}}{2^{p} + 1}\right)\left(2^{p} + 1\right).
+\end{equation}
+We can then cancel out the common terms and solve for $p$,
+\begin{equation}
+     \boxed{p = \frac{\mathrm{log}\left(\frac{u_{2h} - u_{4h}}{u_{h} - u_{2h}}\right)}{\mathrm{log}2}}.
+  \label{eq:fdm_order}
+\end{equation}
+
+\paragraph{Example - Order of Convergence Estimation}
+
+For this example, we will estimate the order of convergences for the three approximations for the first derivative. However,
+this time we will assume that we do not know the value of the first derivative at $x=100$.  Instead, we will estimate the 
+order of convergence with Eq. (\ref{eq:fdm_order}).  We arbitrarily choose the grid spacing such that $h=0.001$.
+This therefore gives us the other 2 spacings of 0.002 and 0.004.  We evaluate the first derivative with each finite difference
+approximation and compute $p$, respectively.  The results from the MATLAB code included below are
+\begin{eqnarray}
+     p_{for}  \approx 1.000289 \nonumber \\
+     p_{bac} \approx 0.997114 \nonumber \\
+     p_{cen} \approx 2.000043 \nonumber
+\end{eqnarray}
+From the results, we can see very good agreement with the theoretically derived convergence orders.  In practice
+it is common that results contain an array of values and not just scalars a shown in all of these examples.  The parameter
+$u_{h}$ should then be taken as the norm of the results.  Be cautious when doing this that different parts of your domain
+and solution may converge at different rates.  This is especially true when including boundary conditions that are first
+order while the interior discretization is of second order.  Thus, when performing the norm of the solution, just consider 
+a subset of the results where you expect second order convergence.
+\lstinputlisting{./code/chap_fdm/fdm_order.m}
 
 \section{Finite Difference Multigroup Diffusion Equation}
 
